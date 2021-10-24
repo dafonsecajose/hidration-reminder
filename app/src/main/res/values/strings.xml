@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Hidrate Reminder</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="label_history">Histórico</string>
+    <string name="label_settings">Configurações</string>
+    <string name="label_hidrate">Hidrate-se</string>
+    <string name="label_weight">Peso</string>
+    <string name="label_time_start">Hora que Acorda</string>
+    <string name="label_time_ends">Hora de Dormir</string>
+    <string name="label_save">Salvar</string>
+</resources>
