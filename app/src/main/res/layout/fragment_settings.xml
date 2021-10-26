@@ -87,7 +87,7 @@
             android:id="@+id/spn_quantity_drink_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"/>
+            android:inputType="number"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

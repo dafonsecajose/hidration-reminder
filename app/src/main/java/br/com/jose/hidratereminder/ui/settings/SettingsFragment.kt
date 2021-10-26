@@ -25,7 +25,6 @@ class SettingsFragment : Fragment() {
     private val dialog by lazy { requireActivity().createProgressDialog() }
     private val viewModel by viewModel<SettingsViewModel>()
     private var _binding: FragmentSettingsBinding? = null
-    private var settings: Settings? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -94,7 +93,7 @@ class SettingsFragment : Fragment() {
             tilBeginTimeHistory.getTimePicker()
             tilEndTimeHistory.getTimePicker()
             btnSaveHistory.setOnClickListener {
-                val settingData = arrayListOf<String>(
+                val settingData = arrayListOf(
                     tilWeightHistory.text,
                     tilBeginTimeHistory.text,
                     tilEndTimeHistory.text,
