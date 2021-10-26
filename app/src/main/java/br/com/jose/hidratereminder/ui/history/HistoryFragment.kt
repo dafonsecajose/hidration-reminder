@@ -12,7 +12,7 @@ import br.com.jose.hidratereminder.databinding.FragmentHistoryBinding
 
 class HistoryFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: HistoryViewModel
+    private lateinit var viewModel: HistoryViewModel
     private var _binding: FragmentHistoryBinding? = null
 
     // This property is only valid between onCreateView and
@@ -24,13 +24,17 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
+        viewModel =
             ViewModelProvider(this).get(HistoryViewModel::class.java)
 
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {
