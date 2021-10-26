@@ -1,4 +1,4 @@
-package br.com.jose.hidratereminder.data.repository
+package br.com.jose.hidratereminder.data.repository.settings
 
 import br.com.jose.hidratereminder.Settings
 import kotlinx.coroutines.flow.Flow

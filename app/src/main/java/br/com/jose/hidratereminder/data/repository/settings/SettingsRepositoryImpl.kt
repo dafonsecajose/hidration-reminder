@@ -1,12 +1,10 @@
-package br.com.jose.hidratereminder.data.repository
+package br.com.jose.hidratereminder.data.repository.settings
 
 import android.content.Context
 import br.com.jose.hidratereminder.Settings
 import br.com.jose.hidratereminder.data.settings.SettingsSerializer.settingsDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.io.IOException
 
 class SettingsRepositoryImpl(
     context: Context

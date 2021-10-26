@@ -2,7 +2,7 @@ package br.com.jose.hidratereminder.domain.settings
 
 
 import br.com.jose.hidratereminder.core.UseCase
-import br.com.jose.hidratereminder.data.repository.SettingsRepository
+import br.com.jose.hidratereminder.data.repository.settings.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
