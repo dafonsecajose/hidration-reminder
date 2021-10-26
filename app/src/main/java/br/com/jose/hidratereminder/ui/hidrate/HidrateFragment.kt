@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.map
 import br.com.jose.hidratereminder.Settings
 import br.com.jose.hidratereminder.core.createDialog
 import br.com.jose.hidratereminder.core.createProgressDialog
@@ -18,10 +19,6 @@ class HidrateFragment : Fragment() {
     private val dialog by lazy { requireActivity().createProgressDialog() }
     private val viewModel by viewModel<HidrateViewModel>()
     private var _binding: FragmentHidrateBinding? = null
-    private var drunk: Int = 0
-    private var amountToDrink: Int = 0
-    private var total: Double = 0.0
-    private var weight: Double = 0.0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,10 +44,10 @@ class HidrateFragment : Fragment() {
         setupClickListeners()
     }
 
+
     private fun setupClickListeners() {
         binding.btnDrink.setOnClickListener {
-            drunk =+ amountToDrink
-            calculateTotalAmountToDrinkPerDay()
+            viewModel.save()
         }
     }
 
@@ -67,21 +64,24 @@ class HidrateFragment : Fragment() {
                 is  HidrateViewModel.State.Success -> {
                   setupSettings(it.settings)
                 }
+                HidrateViewModel.State.Saved -> {
+                    dialog.dismiss()
+                }
             }
         }
-    }
 
-    private fun calculateTotalAmountToDrinkPerDay() {
-        total = (weight * 35)
-        binding.tvTotalDrinks.text = "$drunk/$total"
+        viewModel.totalDrink.observe(viewLifecycleOwner){
+            binding.tvDrunks.text = "${it} ml"
+        }
+        viewModel.quantityDrinkPerDay.observe(viewLifecycleOwner){
+            binding.tvTotalDrinks.text = "${it} ml"
+        }
     }
 
     private fun setupSettings(settings: Settings) {
         binding.run {
             btnDrink.text = "${settings.amountToDrink}ml"
         }
-        amountToDrink = settings.amountToDrink
-        weight = settings.weight
         dialog.dismiss()
     }
 

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import br.com.jose.hidratereminder.Settings
 import br.com.jose.hidratereminder.core.createDialog
 import br.com.jose.hidratereminder.core.createProgressDialog

@@ -10,8 +10,12 @@ class HistoryRepositoryImpl(
 
     private val dao = appDatabase.historyDrinkDao()
 
-    override fun findDrinksByDay(date: Long): Flow<List<HistoryDrink>> {
+    override fun findDrinksByDay(date: String): Flow<List<HistoryDrink>> {
         return dao.findDrinksByDay(date)
+    }
+
+    override fun findTotalDrinksByDay(date: String): Flow<Double> {
+        return dao.findTotalDrinksByDay(date)
     }
 
     override suspend fun save(historyDrink: HistoryDrink) {

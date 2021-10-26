@@ -4,16 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.jose.hidratereminder.core.createDialog
+import br.com.jose.hidratereminder.core.createProgressDialog
 import br.com.jose.hidratereminder.databinding.FragmentHistoryBinding
+import br.com.jose.hidratereminder.presentation.HistoryViewModel
+import br.com.jose.hidratereminder.ui.history.adapter.HistoryAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment() {
 
-    private lateinit var viewModel: HistoryViewModel
+    private val viewModel by viewModel<HistoryViewModel>()
     private var _binding: FragmentHistoryBinding? = null
+    private val adapter by lazy { HistoryAdapter() }
+    private val dialog by lazy { requireActivity().createProgressDialog() }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,9 +29,6 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel =
-            ViewModelProvider(this).get(HistoryViewModel::class.java)
-
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -35,6 +37,33 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycle.addObserver(viewModel)
+        setupObservers()
+        setupRecyclerView()
+    }
+
+    private fun setupObservers() {
+        viewModel.state.observe(viewLifecycleOwner){
+            when (it){
+                is HistoryViewModel.State.Error -> {
+                    dialog.dismiss()
+                    requireActivity().createDialog {
+                        setMessage(it.error.message)
+                    }.show()
+                }
+                HistoryViewModel.State.Loading -> dialog.show()
+                is HistoryViewModel.State.Success -> {
+                    adapter.submitList(it.list)
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvHistory.adapter = adapter
     }
 
     override fun onDestroyView() {

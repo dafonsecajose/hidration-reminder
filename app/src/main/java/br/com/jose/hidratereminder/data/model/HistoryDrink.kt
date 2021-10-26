@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class HistoryDrink(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val date: Long,
+    val date: String,
+    val hour: String,
     val amount: Double
 )
