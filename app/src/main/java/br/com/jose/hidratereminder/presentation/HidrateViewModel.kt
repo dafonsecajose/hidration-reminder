@@ -28,6 +28,7 @@ class HidrateViewModel(
         }
     }
 
+
     sealed class State {
         object Loading : State()
 

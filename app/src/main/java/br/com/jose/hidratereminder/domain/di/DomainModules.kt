@@ -1,5 +1,7 @@
 package br.com.jose.hidratereminder.domain.di
 
+import br.com.jose.hidratereminder.domain.history.GetHistoryDrinksUseCase
+import br.com.jose.hidratereminder.domain.history.SaveHistoryDrinkUserCase
 import br.com.jose.hidratereminder.domain.settings.GetSettingsUseCase
 import br.com.jose.hidratereminder.domain.settings.UpdateSettingsUseCase
 import org.koin.core.context.loadKoinModules
@@ -14,6 +16,9 @@ object DomainModules {
     private fun useCaseModule(): Module {
         return module {
             factory { GetSettingsUseCase(get()) }
+            factory { UpdateSettingsUseCase(get()) }
+            factory { GetHistoryDrinksUseCase(get()) }
+            factory { SaveHistoryDrinkUserCase(get()) }
             factory { UpdateSettingsUseCase(get()) }
         }
 
