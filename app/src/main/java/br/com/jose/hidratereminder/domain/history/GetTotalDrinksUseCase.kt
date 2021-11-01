@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 class GetTotalDrinksUseCase(
     private val repository: HistoryRepository
-): UseCase<String, Double>() {
-    override suspend fun execute(param: String): Flow<Double> {
+): UseCase<String, Double?>() {
+    override suspend fun execute(param: String): Flow<Double?> {
         return repository.findTotalDrinksByDay(param)
     }
 }

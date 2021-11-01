@@ -39,11 +39,9 @@ class HidrateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycle.addObserver(viewModel)
         setupStateObserver()
         setupClickListeners()
     }
-
 
     private fun setupClickListeners() {
         binding.btnDrink.setOnClickListener {
@@ -62,7 +60,7 @@ class HidrateFragment : Fragment() {
                 }
                 HidrateViewModel.State.Loading -> dialog.show()
                 is  HidrateViewModel.State.Success -> {
-                  setupSettings(it.settings)
+
                 }
                 HidrateViewModel.State.Saved -> {
                     dialog.dismiss()
@@ -70,17 +68,19 @@ class HidrateFragment : Fragment() {
             }
         }
 
-        viewModel.totalDrink.observe(viewLifecycleOwner){
-            binding.tvDrunks.text = "${it} ml"
+        viewModel.settings.observe(viewLifecycleOwner) {
+            setupSettings(it)
         }
-        viewModel.quantityDrinkPerDay.observe(viewLifecycleOwner){
-            binding.tvTotalDrinks.text = "${it} ml"
+
+        viewModel.totalDrink.observe(viewLifecycleOwner){
+            binding.tvDrunks.text = "${it.toInt()}"
         }
     }
 
     private fun setupSettings(settings: Settings) {
         binding.run {
             btnDrink.text = "${settings.amountToDrink}ml"
+            tvTotalDrinks.text = "${settings.weight.times(35).toInt()}"
         }
         dialog.dismiss()
     }

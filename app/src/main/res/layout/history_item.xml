@@ -32,6 +32,7 @@
             tools:text="300 ml"
             android:gravity="right"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/tv_time_history"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

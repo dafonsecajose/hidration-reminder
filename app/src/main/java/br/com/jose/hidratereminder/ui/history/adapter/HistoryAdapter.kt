@@ -22,8 +22,8 @@ class HistoryAdapter: ListAdapter<HistoryDrink, HistoryAdapter.ViewHolder>(DiffC
         private val binding: HistoryItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HistoryDrink) {
-            binding.tvQuantityHistory.text = item.amount.toString()
-            binding.tvTimeHistory.text = "${item.hour} ml"
+            binding.tvQuantityHistory.text = "${item.amount.toInt()} ml"
+            binding.tvTimeHistory.text = "${item.hour}"
         }
     }
 }

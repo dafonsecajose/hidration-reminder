@@ -26,27 +26,11 @@ class HidrateViewModel(
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
-    private val _settings = MutableLiveData<Settings>()
+    val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
     private val _totalDrink = MutableLiveData<Double>()
     val totalDrink: LiveData<Double> = _totalDrink
-    private val _quantityDrinkPerDay = MutableLiveData<Double>()
-    val quantityDrinkPerDay: LiveData<Double> = _quantityDrinkPerDay
     private val _date = Calendar.getInstance().time
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase()
-                .flowOn(Dispatchers.Main)
-                .onStart { _state.value = State.Loading }
-                .catch { _state.value = State.Error(it) }
-                .collect {
-                    _settings.value = it
-                    _quantityDrinkPerDay.value = it.weight * 35
-                    _state.value = State.Success(it)
-                }
-        }
-    }
 
     fun save(){
         viewModelScope.launch {
@@ -69,7 +53,7 @@ class HidrateViewModel(
                 .onStart { _state.value = State.Loading }
                 .catch { _state.value = State.Error(it) }
                 .collect {
-                    _totalDrink.value = it
+                    _totalDrink.value = it ?: 0.0
                     _state.value = State.Saved
                 }
         }
@@ -80,7 +64,7 @@ class HidrateViewModel(
             0,
             getDateString(_date),
             getTimeString(_date),
-            _settings.value?.amountToDrink?.toDouble()!!,
+            settings.value?.amountToDrink?.toDouble()!!,
         )
     }
 

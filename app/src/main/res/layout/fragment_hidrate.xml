@@ -24,11 +24,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="35sp"
+        android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_label_drinks"
-        tools:text="Bebidos: 0" />
+        tools:text="0" />
 
     <TextView
         android:id="@+id/tv_label_total"
@@ -47,9 +47,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="35sp"
+        android:textSize="50sp"
         tools:layout_editor_absoluteY="67dp"
-        tools:text="Total: 3000ml"
+        tools:text="3000ml"
         app:layout_constraintTop_toBottomOf="@+id/tv_label_total"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,15 +57,16 @@
 
     <Button
         android:id="@+id/btn_drink"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:background="@drawable/round_button"
         android:drawableTop="@drawable/ic_drink_big"
         android:drawableTint="@color/white"
         android:layout_marginTop="16dp"
         android:elevation="32dp"
         android:gravity="center_horizontal|top"
-        android:paddingTop="32dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintTop_toBottomOf="@+id/tv_total_drinks"

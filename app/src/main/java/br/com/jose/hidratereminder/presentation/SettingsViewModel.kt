@@ -17,18 +17,8 @@ class SettingsViewModel(
 ): ViewModel(), LifecycleObserver {
 
     private val _state = MutableLiveData<State>()
+    val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
     val state: LiveData<State> = _state
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    private fun getSettings() {
-        viewModelScope.launch {
-            getSettingsUseCase()
-                .flowOn(Dispatchers.Main)
-                .onStart { _state.value = State.Loading }
-                .catch { _state.value = State.Error(it) }
-                .collect { _state.value = State.Success(it) }
-        }
-    }
 
      fun updateSettings(data: ArrayList<String>) {
         viewModelScope.launch {

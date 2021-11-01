@@ -1,16 +1,20 @@
 package br.com.jose.hidratereminder.ui.settings
 
+import android.os.Binder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import br.com.jose.hidratereminder.Settings
 import br.com.jose.hidratereminder.core.createDialog
 import br.com.jose.hidratereminder.core.createProgressDialog
 import br.com.jose.hidratereminder.core.text
 import br.com.jose.hidratereminder.databinding.FragmentSettingsBinding
+import br.com.jose.hidratereminder.databinding.QuantityPickerBinding
+import br.com.jose.hidratereminder.databinding.WeightPickerBinding
 import br.com.jose.hidratereminder.presentation.SettingsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -44,7 +48,6 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSpinner()
         setupListeners()
         setupObservers()
         lifecycle.addObserver(viewModel)
@@ -55,7 +58,7 @@ class SettingsFragment : Fragment() {
         binding.run {
             tilWeightHistory.text = settings.weight.toString()
             tilBeginTimeHistory.text = settings.beginTime.toString()
-            tilEndTimeHistory.text = settings.beginTime.toString()
+            tilEndTimeHistory.text = settings.endTime.toString()
             tilQuantityDrinkHistory.text = settings.amountToDrink.toString()
         }
     }
@@ -71,7 +74,6 @@ class SettingsFragment : Fragment() {
                 }
                 SettingsViewModel.State.Loading -> dialog.show()
                 is SettingsViewModel.State.Success -> {
-                    setupSetting(it.settings)
                     dialog.dismiss()
                 }
                 SettingsViewModel.State.Updated -> {
@@ -79,18 +81,19 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
+        viewModel.settings.observe(viewLifecycleOwner){
+            setupSetting(it)
+        }
     }
 
-    private fun setupSpinner() {
-        val amountToDrink = arrayListOf(100, 200, 300, 400, 500)
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, amountToDrink)
-        binding.spnQuantityDrinkHistory.setAdapter(adapter)
-    }
 
     private fun setupListeners() {
         with(binding) {
+            tilWeightHistory.getWeightPicker()
             tilBeginTimeHistory.getTimePicker()
             tilEndTimeHistory.getTimePicker()
+            tilQuantityDrinkHistory.getQuantityDrinkPicker()
+
             btnSaveHistory.setOnClickListener {
                 val settingData = arrayListOf(
                     tilWeightHistory.text,
@@ -100,6 +103,52 @@ class SettingsFragment : Fragment() {
                     )
                 viewModel.updateSettings(settingData)
             }
+        }
+    }
+
+    private fun TextInputLayout.getWeightPicker() {
+        this.editText?.setOnClickListener {
+            val weightBind = WeightPickerBinding.inflate(layoutInflater)
+            weightBind.firstWeight.minValue = 0
+            weightBind.firstWeight.maxValue = 300
+            weightBind.secondWeight.minValue = 0
+            weightBind.secondWeight.maxValue = 10
+            val weight = this.text.split(".").toTypedArray()
+            weightBind.firstWeight.value = weight[0].toInt()
+            weightBind.secondWeight.value = weight[1].toInt()
+            requireActivity().createDialog {
+                this.setTitle("Quantidade de bebida")
+                this.setView(weightBind.root)
+                this.setPositiveButton("OK") { dialog, which ->
+                    this@getWeightPicker.text = "${weightBind.firstWeight.value}.${weightBind.secondWeight.value}"
+                }
+                this.setNegativeButton("Cancelar", null)
+            }.show()
+        }
+    }
+
+
+    private fun TextInputLayout.getQuantityDrinkPicker() {
+        this.editText?.setOnClickListener {
+            val quantityBind = QuantityPickerBinding.inflate(layoutInflater)
+            quantityBind.quantityPicker.minValue = 0
+            quantityBind.quantityPicker.maxValue = 1000
+            val steeps = 100
+            quantityBind.quantityPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+                picker.value = when {
+                    newVal < oldVal -> oldVal - steeps
+                    else -> oldVal + steeps
+                }
+            }
+            quantityBind.quantityPicker.value = this.text.toInt()
+            requireActivity().createDialog {
+                this.setTitle("Quantidade de bebida")
+                this.setView(quantityBind.root)
+                this.setPositiveButton("OK") { dialog, which ->
+                    this@getQuantityDrinkPicker.text = quantityBind.quantityPicker.value.toString()
+                }
+                this.setNegativeButton("Cancelar", null)
+            }.show()
         }
     }
 
