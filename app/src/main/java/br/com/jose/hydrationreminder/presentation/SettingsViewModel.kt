@@ -37,4 +37,8 @@ class SettingsViewModel(
         data class Success(val settings: Settings) : State()
         data class Error(val error: Throwable) : State()
     }
+
+    companion object {
+        const val EXTRA_NOTIFICATION_ID = "EXTRA_NOTIFICATION_ID"
+    }
 }
