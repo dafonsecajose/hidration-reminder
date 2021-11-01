@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_hidrate"
-        android:name="br.com.jose.hidratereminder.ui.hidrate.HidrateFragment"
+        android:name="br.com.jose.hydrationreminder.ui.hidrate.HidrateFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_hidrate" />
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="br.com.jose.hidratereminder.ui.history.HistoryFragment"
+        android:name="br.com.jose.hydrationreminder.ui.history.HistoryFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="br.com.jose.hidratereminder.ui.settings.SettingsFragment"
+        android:name="br.com.jose.hydrationreminder.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_settings" />
 </navigation>
