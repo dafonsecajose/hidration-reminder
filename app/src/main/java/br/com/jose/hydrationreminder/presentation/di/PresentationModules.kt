@@ -19,7 +19,7 @@ object PresentationModules {
         return module {
             viewModel { MainViewModel(get()) }
             viewModel { HistoryViewModel(get()) }
-            viewModel { SettingsViewModel(get(), get()) }
+            viewModel { SettingsViewModel(get(), get(), get()) }
             viewModel { HidrateViewModel(get(), get(), get()) }
         }
     }

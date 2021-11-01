@@ -1,5 +1,7 @@
 package br.com.jose.hydrationreminder.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import br.com.jose.hydrationreminder.Settings
 import br.com.jose.hydrationreminder.domain.settings.GetSettingsUseCase
@@ -14,13 +16,15 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     getSettingsUseCase: GetSettingsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase
+    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val notificationsSchedule: NotificationsSchedule
 ): ViewModel() {
 
     private val _state = MutableLiveData<State>()
     val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
     val state: LiveData<State> = _state
 
+     @RequiresApi(Build.VERSION_CODES.O)
      fun updateSettings(data: ArrayList<String>) {
         viewModelScope.launch {
             updateSettingsUseCase(data)
@@ -29,7 +33,7 @@ class SettingsViewModel(
                 .catch { _state.value = State.Error(it) }
                 .collect {
                     _state.value = State.Updated
-
+                    notificationsSchedule.createNotifications()
                 }
         }
     }
