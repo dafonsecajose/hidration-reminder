@@ -1,5 +1,6 @@
 package br.com.jose.hydrationreminder.notifications.di
 
+import br.com.jose.hydrationreminder.notifications.BootNotificationReceiver
 import br.com.jose.hydrationreminder.notifications.NotificationsSchedule
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.context.loadKoinModules
@@ -13,7 +14,8 @@ object NotificationModule {
 
     private fun notificationScheduleModule(): Module {
         return module {
-            factory { NotificationsSchedule(androidApplication()) }
+            factory { BootNotificationReceiver(get()) }
+            factory { NotificationsSchedule(androidApplication(), get()) }
         }
     }
 }

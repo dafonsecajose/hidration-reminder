@@ -21,7 +21,6 @@ object NotificationUtil {
     private const val PRIMARY_CHANNEL_ID = "primary_channel_id"
 
     fun sendNotification(context: Context, notificationId: Long){
-        Log.i("noti", "util $notificationId",)
         val notificationManager = context
             .getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val intent = Intent(context, MainActivity::class.java)

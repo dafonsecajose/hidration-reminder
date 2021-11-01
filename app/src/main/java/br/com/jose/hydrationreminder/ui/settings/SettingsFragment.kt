@@ -1,10 +1,14 @@
 package br.com.jose.hydrationreminder.ui.settings
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import br.com.jose.hydrationreminder.Settings
 import br.com.jose.hydrationreminder.core.createDialog
 import br.com.jose.hydrationreminder.core.createProgressDialog
@@ -13,7 +17,6 @@ import br.com.jose.hydrationreminder.databinding.FragmentSettingsBinding
 import br.com.jose.hydrationreminder.databinding.QuantityPickerBinding
 import br.com.jose.hydrationreminder.databinding.WeightPickerBinding
 import br.com.jose.hydrationreminder.presentation.SettingsViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -34,7 +37,7 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -42,12 +45,12 @@ class SettingsFragment : Fragment() {
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupListeners()
         setupObservers()
-
     }
 
     private fun setupSetting(settings: Settings) {
@@ -74,7 +77,8 @@ class SettingsFragment : Fragment() {
                 }
                 SettingsViewModel.State.Updated -> {
                     dialog.dismiss()
-                    Snackbar.make(binding.root, "Setting Atualizado", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Configurações Atualizadas", Toast.LENGTH_SHORT).show()
+                    goToHidrate()
                 }
             }
         }
@@ -83,7 +87,13 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun goToHidrate() {
+        val direction = SettingsFragmentDirections.actionNavigationSettingsToNavigationHidrate()
+        val controller = findNavController()
+        controller.navigate(direction)
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupListeners() {
         with(binding) {
             tilWeightHistory.getWeightPicker()

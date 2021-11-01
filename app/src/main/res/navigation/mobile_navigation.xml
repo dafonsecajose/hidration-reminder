@@ -21,5 +21,11 @@
         android:id="@+id/navigation_settings"
         android:name="br.com.jose.hydrationreminder.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_hidrate"
+            app:destination="@id/navigation_hidrate"
+            app:popUpTo="@id/navigation_settings"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

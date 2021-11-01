@@ -8,15 +8,16 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatCallback
-import androidx.lifecycle.*
 import br.com.jose.hydrationreminder.Settings
 import br.com.jose.hydrationreminder.core.formatLocalDateTime
 import br.com.jose.hydrationreminder.core.formatMilliSeconds
 import br.com.jose.hydrationreminder.core.getDateString
 import br.com.jose.hydrationreminder.domain.settings.GetSettingsUseCase
 import br.com.jose.hydrationreminder.presentation.SettingsViewModel.Companion.EXTRA_NOTIFICATION_ID
-
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -25,39 +26,41 @@ class NotificationsSchedule(
     getSettingsUseCase: GetSettingsUseCase
 ) {
     private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-    private val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
+    private val settings: Flow<Settings> =  getSettingsUseCase.getSettings()
     private lateinit var beginDateTime: LocalDateTime
     private lateinit var finishedDateTime: LocalDateTime
 
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createNotifications() {
+     fun createNotifications() {
         val dateNow = getDateString()
 
-        settings.value.let { settings ->
-            beginDateTime = "$dateNow ${settings?.beginTime}:00".formatLocalDateTime()
-            finishedDateTime = "$dateNow ${settings?.endTime}:00".formatLocalDateTime()
+        val st: Settings
+        runBlocking {
+            st = settings.first()
         }
 
-        val differenceHour = ChronoUnit.HOURS.between(beginDateTime, finishedDateTime)
 
-        var dateNotification = beginDateTime
-        for (i in 0..differenceHour) {
-            val date = when {
-                dateNotification.isBefore(LocalDateTime.now()) -> dateNotification.plusDays(1)
-                else -> dateNotification
+            beginDateTime = "$dateNow ${st.beginTime}:00".formatLocalDateTime()
+            finishedDateTime = "$dateNow ${st.endTime}:00".formatLocalDateTime()
+
+            val differenceHour = ChronoUnit.HOURS.between(beginDateTime, finishedDateTime)
+
+            var dateNotification = beginDateTime
+            for (i in 0..differenceHour) {
+                val date = when {
+                    dateNotification.isBefore(LocalDateTime.now()) -> dateNotification.plusDays(1)
+                    else -> dateNotification
+                }
+                schedule(date, i.toInt())
+                dateNotification = dateNotification.plusHours(1)
             }
 
-            Log.i("noti", date.toString())
-            schedule(date, i.toInt())
-            dateNotification = dateNotification.plusHours(1)
-        }
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun schedule(date: LocalDateTime, id: Int){
-        Log.i("noti", "schedule")
-
         setAlert(id, date, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
