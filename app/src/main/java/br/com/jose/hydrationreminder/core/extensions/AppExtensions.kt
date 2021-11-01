@@ -1,9 +1,17 @@
 package br.com.jose.hydrationreminder.core
 
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.os.Build
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 var TextInputLayout.text : String
@@ -31,4 +39,27 @@ fun TextView.addNumberDrink(drunk: Int, quantity: Int) {
         this.text = it.animatedValue.toString()
     }
     animator.start()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun String.formatMilliSeconds(): Long{
+    return LocalDateTime.parse(this, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+        .atZone(ZoneId.systemDefault())
+        .toInstant()
+        .toEpochMilli()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDateTime.formatMilliSeconds() : Long {
+    return this.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun String.formatLocalDateTime(): LocalDateTime {
+    return LocalDateTime.parse(this, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:s"))
+}
+
+fun View.hideSoftKeyboard() {
+    val im = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    im.hideSoftInputFromWindow(windowToken, 0)
 }

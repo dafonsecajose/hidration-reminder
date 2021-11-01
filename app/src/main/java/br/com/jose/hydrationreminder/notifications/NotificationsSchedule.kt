@@ -8,17 +8,29 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import br.com.jose.hydrationreminder.Settings
+import br.com.jose.hydrationreminder.core.formatMilliSeconds
+import br.com.jose.hydrationreminder.domain.settings.GetSettingsUseCase
 import br.com.jose.hydrationreminder.presentation.SettingsViewModel.Companion.EXTRA_NOTIFICATION_ID
 
 import java.time.LocalDateTime
 
 class NotificationsSchedule(
-    private val context: Context
+    private val context: Context,
+    getSettingsUseCase: GetSettingsUseCase
 ) {
     private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+    private val setting: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
+
+    fun createNotifications() {
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun schedule(date: LocalDateTime, id: Int){
+    private fun schedule(date: LocalDateTime, id: Int){
         Log.i("noti", "schedule")
 
         setAlert(id, date, PendingIntent.FLAG_UPDATE_CURRENT)
