@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val getSettingsUseCase: GetSettingsUseCase,
+    getSettingsUseCase: GetSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase
-): ViewModel(), LifecycleObserver {
+): ViewModel() {
 
     private val _state = MutableLiveData<State>()
     val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()

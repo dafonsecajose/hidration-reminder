@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.map
 import br.com.jose.hidratereminder.Settings
+import br.com.jose.hidratereminder.core.addNumberDrink
 import br.com.jose.hidratereminder.core.createDialog
 import br.com.jose.hidratereminder.core.createProgressDialog
 import br.com.jose.hidratereminder.databinding.FragmentHidrateBinding
@@ -19,6 +20,9 @@ class HidrateFragment : Fragment() {
     private val dialog by lazy { requireActivity().createProgressDialog() }
     private val viewModel by viewModel<HidrateViewModel>()
     private var _binding: FragmentHidrateBinding? = null
+    private var drunk: Double = 0.0
+    private var drinkTurn: Int = 0
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -39,6 +43,7 @@ class HidrateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycle.addObserver(viewModel)
         setupStateObserver()
         setupClickListeners()
     }
@@ -59,9 +64,7 @@ class HidrateFragment : Fragment() {
                     }.show()
                 }
                 HidrateViewModel.State.Loading -> dialog.show()
-                is  HidrateViewModel.State.Success -> {
 
-                }
                 HidrateViewModel.State.Saved -> {
                     dialog.dismiss()
                 }
@@ -73,14 +76,18 @@ class HidrateFragment : Fragment() {
         }
 
         viewModel.totalDrink.observe(viewLifecycleOwner){
-            binding.tvDrunks.text = "${it.toInt()}"
+            if(drunk < it){
+                binding.tvDrunks.addNumberDrink(drunk.toInt(), it.toInt())
+                drunk = it
+            }
         }
     }
 
     private fun setupSettings(settings: Settings) {
         binding.run {
             btnDrink.text = "${settings.amountToDrink}ml"
-            tvTotalDrinks.text = "${settings.weight.times(35).toInt()}"
+            drinkTurn = settings.amountToDrink
+            tvTotalDrinks.addNumberDrink(0, settings.weight.times(35).toInt())
         }
         dialog.dismiss()
     }

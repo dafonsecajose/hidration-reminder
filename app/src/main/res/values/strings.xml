@@ -11,4 +11,5 @@
     <string name="label_time_ends">Hora de Dorme</string>
     <string name="label_save">Salvar</string>
     <string name="label_quantity_drink">Quantidade de Bebida(ml)</string>
+    <string name="label_progress">Keep Calm e Hidrate-se</string>
 </resources>

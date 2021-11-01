@@ -19,10 +19,10 @@ import java.time.LocalDateTime
 import java.util.*
 
 class HidrateViewModel(
-    private val getSettingsUseCase: GetSettingsUseCase,
+    getSettingsUseCase: GetSettingsUseCase,
     private val saveHistoryDrinkUserCase: SaveHistoryDrinkUserCase,
     private val getTotalDrinksUseCase: GetTotalDrinksUseCase
-) : ViewModel(), LifecycleObserver {
+) : ViewModel(), LifecycleObserver{
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
@@ -73,7 +73,6 @@ class HidrateViewModel(
         object Loading : State()
         object Saved: State()
 
-        data class Success(val settings: Settings) : State()
         data class Error(val error: Throwable) : State()
     }
 }

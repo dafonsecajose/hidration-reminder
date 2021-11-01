@@ -50,7 +50,6 @@ class SettingsFragment : Fragment() {
 
         setupListeners()
         setupObservers()
-        lifecycle.addObserver(viewModel)
 
     }
 
@@ -77,6 +76,7 @@ class SettingsFragment : Fragment() {
                     dialog.dismiss()
                 }
                 SettingsViewModel.State.Updated -> {
+                    dialog.dismiss()
                     Snackbar.make(binding.root, "Setting Atualizado", Snackbar.LENGTH_SHORT).show()
                 }
             }
