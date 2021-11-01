@@ -8,24 +8,49 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.appcompat.app.AppCompatCallback
+import androidx.lifecycle.*
 import br.com.jose.hydrationreminder.Settings
+import br.com.jose.hydrationreminder.core.formatLocalDateTime
 import br.com.jose.hydrationreminder.core.formatMilliSeconds
+import br.com.jose.hydrationreminder.core.getDateString
 import br.com.jose.hydrationreminder.domain.settings.GetSettingsUseCase
 import br.com.jose.hydrationreminder.presentation.SettingsViewModel.Companion.EXTRA_NOTIFICATION_ID
 
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 class NotificationsSchedule(
     private val context: Context,
     getSettingsUseCase: GetSettingsUseCase
 ) {
     private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-    private val setting: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
+    private val settings: LiveData<Settings> = getSettingsUseCase.getSettings().asLiveData()
+    private lateinit var beginDateTime: LocalDateTime
+    private lateinit var finishedDateTime: LocalDateTime
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createNotifications() {
+        val dateNow = getDateString()
 
+        settings.value.let { settings ->
+            beginDateTime = "$dateNow ${settings?.beginTime}:00".formatLocalDateTime()
+            finishedDateTime = "$dateNow ${settings?.endTime}:00".formatLocalDateTime()
+        }
+
+        val differenceHour = ChronoUnit.HOURS.between(beginDateTime, finishedDateTime)
+
+        var dateNotification = beginDateTime
+        for (i in 0..differenceHour) {
+            val date = when {
+                dateNotification.isBefore(LocalDateTime.now()) -> dateNotification.plusDays(1)
+                else -> dateNotification
+            }
+
+            Log.i("noti", date.toString())
+            schedule(date, i.toInt())
+            dateNotification = dateNotification.plusHours(1)
+        }
     }
 
 

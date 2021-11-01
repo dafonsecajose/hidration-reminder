@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import br.com.jose.hydrationreminder.Settings
 import br.com.jose.hydrationreminder.domain.settings.GetSettingsUseCase
 import br.com.jose.hydrationreminder.domain.settings.UpdateSettingsUseCase
+import br.com.jose.hydrationreminder.notifications.NotificationsSchedule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -26,7 +27,10 @@ class SettingsViewModel(
                 .flowOn(Dispatchers.Main)
                 .onStart { _state.value = State.Loading }
                 .catch { _state.value = State.Error(it) }
-                .collect { _state.value = State.Updated }
+                .collect {
+                    _state.value = State.Updated
+
+                }
         }
     }
 
