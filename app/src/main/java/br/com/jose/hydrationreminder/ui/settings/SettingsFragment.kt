@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import br.com.jose.hydrationreminder.R
 import br.com.jose.hydrationreminder.Settings
 import br.com.jose.hydrationreminder.core.createDialog
 import br.com.jose.hydrationreminder.core.createProgressDialog
@@ -101,6 +103,7 @@ class SettingsFragment : Fragment() {
             tilEndTimeHistory.getTimePicker()
             tilQuantityDrinkHistory.getQuantityDrinkPicker()
 
+
             btnSaveHistory.setOnClickListener {
                 val settingData = arrayListOf(
                     tilWeightHistory.text,
@@ -108,9 +111,35 @@ class SettingsFragment : Fragment() {
                     tilEndTimeHistory.text,
                     tilQuantityDrinkHistory.text
                     )
-                viewModel.updateSettings(settingData)
+                if(validateField()) {
+                    viewModel.updateSettings(settingData)
+                }
             }
         }
+    }
+
+    private fun validateField(): Boolean {
+       binding.run {
+           return when {
+               tilWeightHistory.text.isNullOrEmpty() || tilWeightHistory.text == "0.0" -> {
+                   handleError(tilWeightHistory, getString(R.string.warning_weight))
+               }
+               tilBeginTimeHistory.text.isNullOrEmpty() -> {
+                   handleError(tilBeginTimeHistory, getString(R.string.warning_begin_time))
+               }
+               tilEndTimeHistory.text.isNullOrEmpty() -> {
+                   handleError(tilBeginTimeHistory, getString(R.string.warning_end_time))
+               }
+               tilQuantityDrinkHistory.text.isNullOrEmpty() || tilQuantityDrinkHistory.text == "0" -> {
+                   handleError(tilQuantityDrinkHistory, getString(R.string.warning_quantity_drink))
+               }
+               else -> true
+           }
+       }
+    }
+    private fun handleError(field: TextInputLayout, message: String): Boolean {
+        field.error = message
+        return false
     }
 
     private fun TextInputLayout.getWeightPicker() {
@@ -124,12 +153,12 @@ class SettingsFragment : Fragment() {
             weightBind.firstWeight.value = weight[0].toInt()
             weightBind.secondWeight.value = weight[1].toInt()
             requireActivity().createDialog {
-                this.setTitle("Quantidade de bebida")
+                this.setTitle(getString(R.string.label_weight))
                 this.setView(weightBind.root)
-                this.setPositiveButton("OK") { dialog, which ->
+                this.setPositiveButton(getString(android.R.string.ok)) { dialog, which ->
                     this@getWeightPicker.text = "${weightBind.firstWeight.value}.${weightBind.secondWeight.value}"
                 }
-                this.setNegativeButton("Cancelar", null)
+                this.setNegativeButton(getString(android.R.string.cancel), null)
             }.show()
         }
     }
@@ -149,12 +178,12 @@ class SettingsFragment : Fragment() {
             }
             quantityBind.quantityPicker.value = this.text.toInt()
             requireActivity().createDialog {
-                this.setTitle("Quantidade de bebida")
+                this.setTitle(getString(R.string.label_quantity_drink))
                 this.setView(quantityBind.root)
-                this.setPositiveButton("OK") { dialog, which ->
+                this.setPositiveButton(getString(android.R.string.ok)) { dialog, which ->
                     this@getQuantityDrinkPicker.text = quantityBind.quantityPicker.value.toString()
                 }
-                this.setNegativeButton("Cancelar", null)
+                this.setNegativeButton(getString(android.R.string.cancel), null)
             }.show()
         }
     }

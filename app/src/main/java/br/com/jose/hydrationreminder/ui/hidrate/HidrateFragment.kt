@@ -77,9 +77,10 @@ class HidrateFragment : Fragment() {
             if(drunk < it){
                 binding.tvDrunks.addNumberDrink(drunk.toInt(), it.toInt())
                 drunk = it
-            } else {
+            } else if (drunk < 1.0){
                 binding.tvDrunks.text = "0"
             }
+
         }
     }
 

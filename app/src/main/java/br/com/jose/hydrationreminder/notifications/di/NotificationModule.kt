@@ -14,7 +14,7 @@ object NotificationModule {
 
     private fun notificationScheduleModule(): Module {
         return module {
-            factory { BootNotificationReceiver(get()) }
+            factory { BootNotificationReceiver() }
             factory { NotificationsSchedule(androidApplication(), get()) }
         }
     }

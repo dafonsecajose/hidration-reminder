@@ -15,4 +15,10 @@
     <string name="notification_channel_description">Hidrate - Relembre quando beber água</string>
     <string name="notification_title">Bora se Hidratar?</string>
     <string name="notification_content">Hora de beber água. Hidrate-se</string>
+    <string name="warning_weight">Informe o Peso</string>
+    <string name="warning_begin_time">Informe a Data que você acorda</string>
+    <string name="warning_end_time">Informe a Data que você Dorme</string>
+    <string name="warning_quantity_drink">Informe  a Quantidade de Bebida</string>
+    <string name="babel_drunk">Bebidos:</string>
+    <string name="label_goal">Meta:</string>
 </resources>

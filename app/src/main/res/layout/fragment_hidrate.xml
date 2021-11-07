@@ -4,20 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="16dp"
     tools:context=".ui.hidrate.HidrateFragment">
+    <TextView
+        android:id="@+id/tv_hidrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:text="@string/label_hidrate"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_label_drinks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Bebidos:"
+        android:text="@string/babel_drunk"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hidrate"
         app:layout_constraintVertical_bias="0.15" />
     <TextView
         android:id="@+id/tv_drunks"
@@ -34,7 +47,7 @@
         android:id="@+id/tv_label_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Meta:"
+        android:text="@string/label_goal"
         android:textSize="15sp"
         android:textStyle="bold"
         android:gravity="center"

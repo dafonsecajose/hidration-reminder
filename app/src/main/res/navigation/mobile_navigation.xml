@@ -25,6 +25,7 @@
         <action
             android:id="@+id/action_navigation_settings_to_navigation_hidrate"
             app:destination="@id/navigation_hidrate"
+            app:launchSingleTop="true"
             app:popUpTo="@id/navigation_settings"
             app:popUpToInclusive="true" />
     </fragment>

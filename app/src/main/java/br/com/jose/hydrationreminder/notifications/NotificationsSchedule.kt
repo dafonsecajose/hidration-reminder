@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import org.koin.core.Koin
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -34,7 +35,7 @@ class NotificationsSchedule(
     @RequiresApi(Build.VERSION_CODES.O)
      fun createNotifications() {
         val dateNow = getDateString()
-
+        Log.i("noti", "createNotifications")
         val st: Settings
         runBlocking {
             st = settings.first()

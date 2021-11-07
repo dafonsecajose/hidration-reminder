@@ -5,13 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class BootNotificationReceiver(
-    private val notificationsSchedule: NotificationsSchedule
-): BroadcastReceiver() {
+class BootNotificationReceiver: BroadcastReceiver(), KoinComponent {
+
+    private val notificationsSchedule: NotificationsSchedule by inject()
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent?.action == "android.intent.action.BOOT_COMPLETED") {
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             notificationsSchedule.createNotifications()
         }
     }

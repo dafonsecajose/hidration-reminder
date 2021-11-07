@@ -10,8 +10,8 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "br.com.jose.hidratereminder"
-        minSdk 21
+        applicationId "br.com.jose.hydrationreminder"
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
