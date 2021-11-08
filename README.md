@@ -63,13 +63,13 @@ Necessário para armazenar pares de chave valor ou objetos tipados, utilizado pa
     a notificação.
 
     #### Mas o que é um receiver?
-Receiver é um receptor ele pode receber intents mesmo que o app não esteja executando no momento. Neste
-app utilizei 2 receivers uma para ficar buscando e inflando as notificações no momento adequando e outro
-para ao dispositivo fazer um reboot ele iniciar e reagendar os alarmes para inflar as notificações, pois,
-ao reiniciar o dispositivo elas são zeradas.
-Como o receiver recebe dados do sistema e por fora da aplicação, temos que declarar no Manifest
+    Receiver é um receptor ele pode receber intents mesmo que o app não esteja executando no momento. Neste
+    app utilizei 2 receivers uma para ficar buscando e inflando as notificações no momento adequando e outro
+    para ao dispositivo fazer um reboot ele iniciar e reagendar os alarmes para inflar as notificações, pois,
+    ao reiniciar o dispositivo elas são zeradas.
+    Como o receiver recebe dados do sistema e por fora da aplicação, temos que declarar no Manifest
 
-    ```
+    <xml>
      <receiver android:name=".notifications.NotificationReceiver" android:enabled="true"/>
         <receiver android:name=".notifications.BootNotificationReceiver"
             android:enabled="true"
@@ -81,5 +81,5 @@ Como o receiver recebe dados do sistema e por fora da aplicação, temos que dec
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-    ```
+    </xml>
     Repare que BootNotificationReceiver precisa da permissao RECEIVE_BOOT_COMPLETED, essa permissao vai liberar o app para realizar o reagendamento dos alarmes toda vez que celular ligar novamente.
