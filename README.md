@@ -69,17 +69,52 @@ Necessário para armazenar pares de chave valor ou objetos tipados, utilizado pa
     ao reiniciar o dispositivo elas são zeradas.
     Como o receiver recebe dados do sistema e por fora da aplicação, temos que declarar no Manifest
 
-    <xml>
-     <receiver android:name=".notifications.NotificationReceiver" android:enabled="true"/>
-        <receiver android:name=".notifications.BootNotificationReceiver"
-            android:enabled="true"
-            android:label="NotificationReceiver"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
-    </xml>
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="br.com.jose.hydrationreminder">
+
+        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+        <application
+            android:name="br.com.jose.hydrationreminder.App"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_bottle"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_bottle_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.HidrateReminder">
+
+            <activity
+                android:name="br.com.jose.hydrationreminder.ui.SplashScreenActivity"
+                android:exported="true"
+                android:noHistory="true"
+                android:screenOrientation="portrait">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+            <activity
+                android:name="br.com.jose.hydrationreminder.ui.MainActivity"
+                android:exported="true"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"/>
+            <receiver android:name=".notifications.NotificationReceiver" android:enabled="true"/>
+            <receiver android:name=".notifications.BootNotificationReceiver"
+                android:enabled="true"
+                android:label="NotificationReceiver"
+                android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+                android:exported="false">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                    <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                </intent-filter>
+            </receiver>
+        </application>
+
+    </manifest>
+    ```
     Repare que BootNotificationReceiver precisa da permissao RECEIVE_BOOT_COMPLETED, essa permissao vai liberar o app para realizar o reagendamento dos alarmes toda vez que celular ligar novamente.
