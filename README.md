@@ -42,7 +42,7 @@ Necessário para armazenar pares de chave valor ou objetos tipados, utilizado pa
 ### Notificações
 Para inflar as notificações eu poderia ter utilizado o work manager, porem, ele é bastante influenciado pela bateria do aparelho, então optei por utilizar o Alarme Manager para gerenciar as notificações, pois, o Alarm Manager é mais firme em relação ao horário
 
-   ```kotlin
+```kotlin
     val intent = Intent(context, NotificationReceiver::class.java)
         intent.putExtra(EXTRA_NOTIFICATION_ID, id)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -56,7 +56,7 @@ Para inflar as notificações eu poderia ter utilizado o work manager, porem, el
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-    ```
+```
 
 Como podem ver acima estou utilizando método setRepepating para configurar um alarme com o intervalo
 de 1 dia para cada notificação. Ao chegar a hora agenda o Notification Receiver é acionado e inflando
@@ -69,7 +69,7 @@ para ao dispositivo fazer um reboot ele iniciar e reagendar os alarmes para infl
 ao reiniciar o dispositivo elas são zeradas.
 Como o receiver recebe dados do sistema e por fora da aplicação, temos que declarar no Manifest
 
-    ```xml
+```xml
     <?xml version="1.0" encoding="utf-8"?>
     <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -116,13 +116,11 @@ Como o receiver recebe dados do sistema e por fora da aplicação, temos que dec
         </application>
 
     </manifest>
-    ```
+```
 Repare que BootNotificationReceiver precisa da permissao RECEIVE_BOOT_COMPLETED, essa permissao vai liberar o app para realizar o reagendamento dos alarmes toda vez que celular ligar novamente.
 
 #### Animações numéricas
-Utilizei uma animação acionada quando o fragment de hidratação é chamado e quando o botão de hidratação
-é clicado. Nesse momento a animação vai adicionando de 1 em 1 até o total configurado no app, ex: Bebidos:
-0 a 300 ml ou a meta: 0 ao valor calculado pelo app. Deixando o app mais fluido e dinâmico.
+Utilizei uma animação acionada quando o fragment de hidratação é chamado e quando o botão de hidratação é clicado. Nesse momento a animação vai adicionando de 1 em 1 até o total configurado no app, ex: Bebidos: 0 a 300 ml ou a meta: 0 ao valor calculado pelo app. Deixando o app mais fluido e dinâmico.
 Mas como se faz isso?
 
 ```kotlin
@@ -135,6 +133,4 @@ fun TextView.addNumberDrink(drunk: Int, quantity: Int) {
     animator.start()
 }
 ```
-Utilizando o ValueAnimator, como podemos ver acima, o método ofInt espera o valor inicial e valor final
-de até onde a animação deve acontecer, também podemos controlar o tempo como o método auxiliar duration.
-Dentro do AddUpdaterListener vai acontecendo a adição dos valores.
+Utilizando o ValueAnimator, como podemos ver acima, o método ofInt espera o valor inicial e valor final de até onde a animação deve acontecer, também podemos controlar o tempo como o método auxiliar duration. Dentro do AddUpdaterListener vai acontecendo a adição dos valores.
