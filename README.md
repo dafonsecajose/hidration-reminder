@@ -69,7 +69,7 @@ para ao dispositivo fazer um reboot ele iniciar e reagendar os alarmes para infl
 ao reiniciar o dispositivo elas são zeradas.
 Como o receiver recebe dados do sistema e por fora da aplicação, temos que declarar no Manifest
 
-    ```xml
+    ```
      <receiver android:name=".notifications.NotificationReceiver" android:enabled="true"/>
         <receiver android:name=".notifications.BootNotificationReceiver"
             android:enabled="true"
