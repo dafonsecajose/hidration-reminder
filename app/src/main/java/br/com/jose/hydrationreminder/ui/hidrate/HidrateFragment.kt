@@ -74,15 +74,23 @@ class HidrateFragment : Fragment() {
         }
 
         viewModel.totalDrink.observe(viewLifecycleOwner){
-            if(drunk < it){
-                binding.tvDrunks.addNumberDrink(drunk.toInt(), it.toInt())
-                drunk = it
-            } else if (drunk < 1.0){
-                binding.tvDrunks.text = "0"
+            when {
+                drunk < it -> {
+                    binding.tvDrunks.addNumberDrink(drunk.toInt(), it.toInt())
+                    drunk = it
+                }
+                drunk < 1.0 -> {
+                    binding.tvDrunks.text = "0"
+                }
             }
-
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        drunk = 0.0
+    }
+
 
     private fun setupSettings(settings: Settings) {
         binding.run {
